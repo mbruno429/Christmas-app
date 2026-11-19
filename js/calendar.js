@@ -4,7 +4,7 @@
   const { $, h, esc } = App;
   const COLORS = ['red', 'green', 'gold', 'blue'];
 
-  function showDoor(d, s, onChange) {
+  function showDoor(d, s, aloud) {
     const door = App.DOORS[d];
     const deeds = App.list('deeds', s.y);
     const done = () => deeds.includes(d);
@@ -20,7 +20,7 @@
         '<button class="btn did"></button></div>' +
       (door.joke ? '<div class="joke"><p>😄 ' + esc(door.joke[0]) + '</p>' +
         '<button class="btn ghost tell">Tell me!</button><p class="punch hidden">' + esc(door.joke[1]) + '</p></div>' : ''),
-      { cls: 'door-card', onClose: onChange });
+      { cls: 'door-card' });
 
     const did = $('.did', card);
     const paint = () => {
@@ -34,6 +34,7 @@
       App.save();
       paint();
       App.sfx.win();
+      App.say(App.LINES['deed-done'], 'deed-done');
       App.burst(e.clientX, e.clientY, ['🌾', '⭐', '💛'], 12);
     });
     const tell = $('.tell', card);
@@ -41,11 +42,12 @@
       tell.classList.add('hidden');
       $('.punch', card).classList.remove('hidden');
       App.sfx.sparkle();
-      App.say(door.joke[1]);
+      App.say(door.joke[1], 'joke-' + d);
     });
-    $('.read', card).addEventListener('click', () => {
-      App.say(door.title + '. ' + door.text + ' Today\'s kind deed: ' + door.deed);
-    });
+    const readIt = () => App.say(door.title + '. ' + door.text + ' Today\'s kind deed: ' + door.deed +
+      (door.joke ? ' And here\'s a joke. ' + door.joke[0] : ''), 'door-' + d);
+    $('.read', card).addEventListener('click', readIt);
+    if (aloud) readIt();
   }
 
   App.register('calendar', {
@@ -75,6 +77,7 @@
           const first = new Date(s.y, 11, d);
           const n = Math.round((first - s.t) / 864e5);
           App.sfx.nope();
+          App.say(App.LINES['not-yet'], 'not-yet');
           b.classList.remove('shake');
           void b.offsetWidth;
           b.classList.add('shake');
@@ -89,10 +92,10 @@
           App.sfx.win();
           const r = b.getBoundingClientRect();
           App.burst(r.left + r.width / 2, r.top + r.height / 2);
-          setTimeout(() => showDoor(d, s), 550);
+          setTimeout(() => showDoor(d, s, true), 650);
         } else {
           App.sfx.pop();
-          showDoor(d, s);
+          showDoor(d, s, false);
         }
       });
     }

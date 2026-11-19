@@ -112,5 +112,52 @@ App.WEEKS = [
     text: 'All four candles are shining. God loves us so much that he sent us his Son, Jesus.' }
 ];
 
+// Everyone in the Bethlehem scene: the name shown, and what is said aloud.
+App.FIGS = {
+  star: { label: 'Star ⭐', say: 'The star of Bethlehem!' },
+  mary: { label: 'Mary 💙', say: 'Mary, the mother of Jesus.' },
+  joseph: { label: 'Joseph', say: 'Saint Joseph.' },
+  baby: { label: 'Baby Jesus 💛', say: 'Baby Jesus! Happy birthday, Jesus!' },
+  manger: { label: 'Waiting for Jesus…', say: 'The manger is waiting for baby Jesus.' },
+  ox: { label: 'Ox 🐂', say: 'An ox! Moo!' },
+  donkey: { label: 'Donkey', say: 'A donkey! Hee-haw!' },
+  shepherd: { label: 'Shepherd', say: 'A shepherd.' },
+  sheep: { label: 'Sheep 🐑', say: 'A sheep! Baa!' },
+  lamb: { label: 'Lamb 🐑', say: 'A little lamb! Baa!' },
+  king1: { label: 'Wise man 👑', say: 'A wise man, bringing gold.' },
+  king2: { label: 'Wise man 👑', say: 'A wise man, bringing frankincense.' },
+  king3: { label: 'Wise man 👑', say: 'A wise man, bringing myrrh.' },
+  angel: { label: 'Angel 👼', say: 'An angel! Glory to God!' }
+};
+
+// Short spoken lines used around the app.
+App.LINES = {
+  'wreath-before': 'The Advent wreath. Each Sunday of Advent we light one more candle while we wait for Jesus.',
+  'wreath-christmas': 'Christ is born! The white candle in the middle is the Christ candle. Jesus, the Light of the world, is here. Merry Christmas!',
+  'not-yet': 'Not yet!',
+  'deed-done': 'Well done! You added straw to the manger.',
+  'found-all': 'You found them all!',
+  'great-catching': 'Great catching!',
+  'song-done': 'You played the whole song!',
+  'letter-sent': 'Your letter is on its way to the North Pole!'
+};
+
+// Background music. All by Kevin MacLeod (incompetech.com), Creative Commons Attribution 4.0.
+App.TRACKS = [
+  ['silent-night', 'Silent Night'],
+  ['adeste-fideles', 'O Come, All Ye Faithful'],
+  ['angels', 'Angels We Have Heard on High'],
+  ['bethlehem', 'O Little Town of Bethlehem'],
+  ['what-child', 'What Child Is This'],
+  ['holy-night', 'O Holy Night'],
+  ['jingle-bells', 'Jingle Bells'],
+  ['jingle-bells-calm', 'Jingle Bells (gentle)'],
+  ['we-wish-you', 'We Wish You a Merry Christmas'],
+  ['deck-the-halls', 'Deck the Halls'],
+  ['christmas-tree', 'O Christmas Tree'],
+  ['housetop', 'Up on a Housetop'],
+  ['sugar-plum', 'Dance of the Sugar Plum Fairy']
+];
+
 App.MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
   'September', 'October', 'November', 'December'];

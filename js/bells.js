@@ -69,7 +69,7 @@
         if (!b) return;
         e.preventDefault();
         const i = +b.dataset.i;
-        App.sfx.bell(BELLS[i][0], 0, 0.26);
+        App.sfx.play('bell', BELLS[i][0], 0, 0.85);
         b.classList.remove('ring');
         void b.offsetWidth;
         b.classList.add('ring');
@@ -78,7 +78,7 @@
           if (pos >= seq.length) {
             seq = null;
             hint.textContent = 'You played the whole song! 🎉';
-            setTimeout(App.party, 500);
+            setTimeout(() => { App.party(); App.say(App.LINES['song-done'], 'song-done'); }, 600);
           }
           paint();
         }
@@ -88,6 +88,8 @@
         if (b) { App.sfx.pop(); start(b.dataset.song); }
       });
       paint();
-    }
+      App.music.block(true); // let the children hear their own playing
+    },
+    leave() { App.music.block(false); }
   });
 })();

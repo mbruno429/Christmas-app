@@ -18,21 +18,41 @@
         '" fill="none" stroke="#0d3d24" stroke-width="3"/>';
       for (let i = 0; i < n; i++) {
         const t = i / (n - 1);
-        const x = x1 + (x2 - x1) * t;
-        const y = y1 + (y2 - y1) * t + 18 * Math.sin(Math.PI * t);
-        bulbs += '<circle class="bulb" cx="' + x.toFixed(0) + '" cy="' + y.toFixed(0) + '" r="8" fill="' + colors[k % 5] +
-          '" style="animation-delay:' + ((k * 0.37) % 1.6).toFixed(2) + 's"/>';
+        const x = (x1 + (x2 - x1) * t).toFixed(0);
+        const y = (y1 + (y2 - y1) * t + 18 * Math.sin(Math.PI * t)).toFixed(0);
+        const c = colors[k % 5];
+        bulbs += '<g class="bulb" style="animation-delay:' + ((k * 0.37) % 1.6).toFixed(2) + 's">' +
+          '<circle cx="' + x + '" cy="' + y + '" r="20" fill="' + c + '" opacity=".22"/>' +
+          '<circle cx="' + x + '" cy="' + y + '" r="8" fill="' + c + '"/>' +
+          '<circle cx="' + (x - 2.5) + '" cy="' + (y - 2.5) + '" r="2.6" fill="#fff" opacity=".8"/></g>';
         k++;
       }
     });
-    const tier = (pts, fill) => '<polygon points="' + pts + '" fill="' + fill + '" stroke="' + fill +
-      '" stroke-width="22" stroke-linejoin="round"/>';
-    return '<svg viewBox="0 0 600 700" aria-hidden="true">' +
-      '<ellipse cx="300" cy="655" rx="270" ry="34" fill="#eaf4ff"/>' +
-      '<rect x="268" y="590" width="64" height="70" rx="8" fill="#6b431f"/>' +
-      tier('300,310 82,596 518,596', '#14613a') +
-      tier('300,180 130,416 470,416', '#1b7f4b') +
-      tier('300,70 180,256 420,256', '#239a5c') +
+    // Each layer of branches: a scalloped lower edge, soft shading and a dusting of snow.
+    const tier = (top, y, half, fill, id) => {
+      const left = 300 - half, right = 300 + half, n = 6, w = (2 * half) / n;
+      let edge = '';
+      for (let i = 0; i < n; i++) edge += ' q' + (-w / 2) + ' 26 ' + (-w) + ' 0';
+      const d = 'M300 ' + top + ' L' + right + ' ' + y + edge + ' Z';
+      const b = (half * 0.72 / 3).toFixed(1); // three soft bumps of snow under the tip
+      const snow = 'M300 ' + top + ' L' + (300 + half * 0.36) + ' ' + (top + (y - top) * 0.36) +
+        (' q-' + b / 2 + ' 20 -' + b + ' 0').repeat(3) + ' Z';
+      return '<path d="' + d + '" fill="' + fill + '" stroke="' + fill + '" stroke-width="16" stroke-linejoin="round"/>' +
+        '<path d="' + d + '" fill="url(#tshade' + id + ')"/>' +
+        (id === 3 ? '<path d="' + snow + '" fill="#f4faff" opacity=".92"/>' : '');
+    };
+    return '<svg viewBox="0 0 600 700" aria-hidden="true"><defs>' +
+      '<linearGradient id="tshade1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".32"/></linearGradient>' +
+      '<linearGradient id="tshade2" href="#tshade1"/><linearGradient id="tshade3" href="#tshade1"/>' +
+      '<radialGradient id="snowpile" cx="50%" cy="20%" r="80%"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#c9dcf2"/></radialGradient>' +
+      '<linearGradient id="trunk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8a5a2b"/><stop offset="1" stop-color="#5b3a1c"/></linearGradient>' +
+      '</defs>' +
+      '<ellipse cx="300" cy="655" rx="280" ry="38" fill="url(#snowpile)"/>' +
+      '<rect x="268" y="590" width="64" height="70" rx="8" fill="url(#trunk)"/>' +
+      tier(300, 590, 226, '#14613a', 1) +
+      tier(172, 410, 176, '#1b7f4b', 2) +
+      tier(62, 250, 124, '#239a5c', 3) +
+      '<ellipse cx="300" cy="664" rx="70" ry="12" fill="#fff"/>' +
       '<g class="lights">' + wires + bulbs + '</g></svg>';
   }
 
@@ -111,7 +131,7 @@
         if (items().length > MAX) items().shift();
         App.save();
         paint();
-        App.sfx.bell(App.pick(['C5', 'E5', 'G5', 'A5']), 0, 0.14);
+        App.sfx.chime(App.pick(['C5', 'E5', 'G5', 'A5', 'C6']));
       });
       stage.addEventListener('pointermove', (e) => {
         if (!drag) return;

@@ -34,27 +34,31 @@
   }
 
   function wreathInfo(s) {
+    const speaker = '<button class="read speak" aria-label="Read to me">🔊</button>';
+    let html, text, clip;
     if (s.isChristmas) {
-      App.modal('<div class="big-icon">🕯️</div><h2>Christ is born!</h2>' +
-        '<p>The white candle in the middle is the Christ candle. Jesus, the Light of the world, is here. Merry Christmas!</p>' +
-        '<button class="btn ghost read">🔊 Read to me</button>')
-        .querySelector('.read').addEventListener('click', () =>
-          App.say('Christ is born! The white candle in the middle is the Christ candle. Jesus, the Light of the world, is here. Merry Christmas!'));
-      return;
-    }
-    if (s.candles === 0) {
+      clip = 'wreath-christmas';
+      text = App.LINES[clip];
+      html = '<div class="big-icon">🕯️</div><h2>Christ is born!</h2>' +
+        '<p>The white candle in the middle is the Christ candle. Jesus, the Light of the world, is here. Merry Christmas!</p>';
+    } else if (s.candles === 0) {
       const n = s.untilAdvent;
-      App.modal('<div class="big-icon">🕯️</div><h2>The Advent wreath</h2>' +
+      clip = 'wreath-before';
+      text = App.LINES[clip];
+      html = '<div class="big-icon">🕯️</div><h2>The Advent wreath</h2>' +
         '<p>Advent begins in <b>' + n + '</b> ' + (n === 1 ? 'sleep' : 'sleeps') +
-        '. Each Sunday we light one more candle while we wait for Jesus.</p>');
-      return;
+        '. Each Sunday of Advent we light one more candle while we wait for Jesus.</p>';
+    } else {
+      const w = App.WEEKS[s.candles];
+      clip = 'week-' + s.candles;
+      text = w.name + '. ' + w.text + ' Come, Lord Jesus!';
+      html = '<div class="big-icon">🕯️</div>' +
+        '<div class="kicker">Week ' + s.candles + ' of Advent</div><h2>' + esc(w.name) + '</h2>' +
+        '<p>' + esc(w.text) + '</p><p class="prayer">Come, Lord Jesus!</p>';
     }
-    const w = App.WEEKS[s.candles];
-    const card = App.modal('<div class="big-icon">🕯️</div>' +
-      '<div class="kicker">Week ' + s.candles + ' of Advent</div><h2>' + esc(w.name) + '</h2>' +
-      '<p>' + esc(w.text) + '</p><p class="prayer">Come, Lord Jesus!</p>' +
-      '<button class="btn ghost read">🔊 Read to me</button>');
-    card.querySelector('.read').addEventListener('click', () => App.say(w.name + '. ' + w.text + ' Come, Lord Jesus!'));
+    const card = App.modal(speaker + html);
+    card.querySelector('.read').addEventListener('click', () => App.say(text, clip));
+    App.say(text, clip);
   }
 
   App.register('home', {
@@ -93,6 +97,11 @@
       root.appendChild(h(
         '<div class="home">' +
           '<button class="gear" aria-label="For grown-ups: press and hold"><span>⚙️</span></button>' +
+          '<div class="tunes">' +
+            '<button class="tune toggle" aria-label="Music on or off"></button>' +
+            '<button class="tune skip" aria-label="Next song">⏭️</button>' +
+            '<span class="now"></span>' +
+          '</div>' +
           '<div class="hero">' +
             '<div class="count">' +
               '<div class="num' + (typeof num === 'number' ? '' : ' emoji') + '">' + num + '</div>' +
@@ -111,11 +120,25 @@
           '</nav>' +
         '</div>'));
 
+      // Music buttons: on/off, next song, and the name of what is playing.
+      const paintTunes = () => {
+        const on = App.state.music;
+        const t = App.music.current();
+        $('.toggle', root).textContent = on ? '🎵' : '🔇';
+        $('.skip', root).classList.toggle('hidden', !on);
+        $('.now', root).textContent = on && t && App.music.playing() ? t[1] : '';
+      };
+      App.music.onchange(paintTunes);
+      paintTunes();
+
       root.addEventListener('click', (e) => {
         const tile = e.target.closest('.tile');
         if (tile) { App.go(tile.dataset.go); return; }
-        if (e.target.closest('.wreath')) { App.sfx.bell('G4'); wreathInfo(s); return; }
+        if (e.target.closest('.wreath')) { App.sfx.play('bell', 'G4', 0, 0.6); wreathInfo(s); return; }
         if (e.target.closest('.gear')) return;
+        if (e.target.closest('.toggle')) { App.music.setEnabled(!App.state.music); paintTunes(); return; }
+        if (e.target.closest('.skip')) { App.sfx.pop(); App.music.next(); return; }
+        if (e.target.closest('.tunes')) return;
         // Anywhere else: a little sparkle for small fingers.
         App.sfx.sparkle();
         App.burst(e.clientX, e.clientY);

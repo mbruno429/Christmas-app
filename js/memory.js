@@ -49,13 +49,14 @@
           a.classList.add('ok');
           b.classList.add('ok');
           setTimeout(() => {
-            App.sfx.bell('E5'); App.sfx.bell('G5', 0.1);
+            App.sfx.play('glock', 'E5', 0, 0.55); App.sfx.play('glock', 'G5', 0.1, 0.55);
             const r = b.getBoundingClientRect();
             App.burst(r.left + r.width / 2, r.top + r.height / 2, ['⭐', '✨'], 8);
           }, 250);
           if (found === pairs) {
             setTimeout(() => {
               App.party();
+              App.say(App.LINES['found-all'], 'found-all');
               const card = App.modal('<div class="big-icon">🏆</div><h2>You found them all!</h2>' +
                 '<p>You did it in <b>' + turns + '</b> turns.</p><button class="btn again">Play again</button>');
               $('.again', card).addEventListener('click', () => { App.closeModal(); App.refresh(); });

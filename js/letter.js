@@ -97,7 +97,8 @@
           L.sealed = true;
           App.save();
           App.party();
-          App.toast('Your letter is on its way to the North Pole!');
+          App.toast(App.LINES['letter-sent']);
+          App.say(App.LINES['letter-sent'], 'letter-sent');
           App.refresh();
           return;
         }

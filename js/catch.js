@@ -35,7 +35,7 @@
       const tricky = mode === 'tricky';
       const scr = h(
         '<div class="catch">' +
-          '<div class="hud"><span class="chip score">🎁 0</span><span class="chip time">⏱️ ' + LENGTH + '</span>' +
+          '<div class="hud"><span class="chip score">🎁 <b>0</b></span><span class="chip time">⏱️ <b>' + LENGTH + '</b></span>' +
             '<span class="chip best">🏆 ' + (App.state.best['catch_' + mode] || 0) + '</span></div>' +
           '<div class="field"><div class="basket">🛷</div>' +
             '<div class="start-over"><div><div class="big-icon">🎁</div>' +
@@ -80,9 +80,13 @@
         const speed = tricky ? Math.min(0.62, 0.3 + elapsed * 0.008) : 0.24;
         items.push({ el, pts: p[1], x: App.rand(0, W - size), y: -size, v: speed * App.rand(0.85, 1.15) });
       }
+      let shown = '';
       function hud() {
-        $('.score', scr).textContent = '🎁 ' + score;
-        $('.time', scr).textContent = '⏱️ ' + Math.max(0, Math.ceil(left));
+        const secs = Math.max(0, Math.ceil(left));
+        if (shown === score + '/' + secs) return; // only touch the page when a number changes
+        shown = score + '/' + secs;
+        $('.score b', scr).textContent = score;
+        $('.time b', scr).textContent = secs;
       }
       function frame(ts) {
         const dt = Math.min(0.05, (ts - last) / 1000);
@@ -103,7 +107,7 @@
             score = Math.max(0, score + it.pts);
             const r = field.getBoundingClientRect();
             if (it.pts > 0) {
-              App.sfx.bell(it.pts > 1 ? 'C6' : App.pick(['E5', 'G5', 'A5']), 0, 0.14);
+              if (it.pts > 1) App.sfx.play('glock', 'C6', 0, 0.6); else App.sfx.chime(App.pick(['E5', 'G5', 'A5']));
               App.burst(r.left + it.x + size / 2, r.top + it.y, ['✨', '⭐'], 4);
             } else {
               App.sfx.nope();
@@ -130,8 +134,9 @@
         const record = score > best;
         if (record) { App.state.best[key] = score; App.save(); }
         App.party();
+        App.say(App.LINES['great-catching'], 'great-catching');
         const card = App.modal('<div class="big-icon">🛷</div><h2>' + (record ? 'New record!' : 'Great catching!') + '</h2>' +
-          '<p>You caught <b>' + score + '</b> ' + (score === 1 ? 'point' : 'points') + ' of presents.</p>' +
+          '<p>You caught <b class="total">' + score + '</b> ' + (score === 1 ? 'point' : 'points') + ' of presents.</p>' +
           '<button class="btn again">Play again</button>', { onClose: () => App.refresh() });
         $('.again', card).addEventListener('click', App.closeModal);
       }
