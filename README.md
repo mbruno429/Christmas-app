@@ -12,6 +12,8 @@ A family Advent and Christmas app for an Android tablet. It is a plain web app w
 - **Decorate the Tree**: one tree per child.
 - **Christmas Bells**: free play, or follow the glowing bell to play Jingle Bells and Joy to the World.
 - **Matching Game** in three sizes, and **Catch the Presents** in two speeds.
+- **Word Search** in three sizes: drag across a word, or tap its first and last letter. Found words are said aloud.
+- **Crossword** in two sizes, with picture clues, an A to Z keyboard on screen, a hint button and clues read aloud. Every puzzle is freshly made from the word list in `js/data.js`.
 - **Letter to Santa**: three wishes, a gift to give someone else, and a gift for Baby Jesus.
 
 ## Put it on the tablet

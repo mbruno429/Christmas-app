@@ -89,8 +89,10 @@
         ['nativity', '🌟', 'Bethlehem', 'blue'],
         ['tree', '🎄', 'Decorate the Tree', 'green'],
         ['bells', '🔔', 'Christmas Bells', 'gold'],
-        ['memory', '🧩', 'Matching Game', 'purple'],
+        ['memory', '🧩', 'Matching Game', 'green'],
         ['catch', '🎁', 'Catch the Presents', 'red'],
+        ['wordsearch', '🔍', 'Word Search', 'blue'],
+        ['crossword', '📝', 'Crossword', 'purple'],
         ['letter', '💌', 'Letter to Santa', 'green']
       ];
 

@@ -139,8 +139,49 @@ App.LINES = {
   'found-all': 'You found them all!',
   'great-catching': 'Great catching!',
   'song-done': 'You played the whole song!',
-  'letter-sent': 'Your letter is on its way to the North Pole!'
+  'letter-sent': 'Your letter is on its way to the North Pole!',
+  'crossword-done': 'You finished the crossword! Well done!'
 };
+
+// Words for the word search and the crossword: [word, picture, clue].
+App.WORDS = [
+  ['STAR', '⭐', 'It shone over Bethlehem to show the way.'],
+  ['MARY', '💙', 'The mother of Jesus.'],
+  ['JOSEPH', '🙏', 'He took care of Mary and baby Jesus.'],
+  ['JESUS', '👶', 'His birthday is on Christmas Day.'],
+  ['ANGEL', '👼', 'A messenger from God who told the good news.'],
+  ['MANGER', '🌾', 'Baby Jesus slept in this, on a bed of straw.'],
+  ['SHEPHERD', '🐑', 'Someone who watches over sheep at night.'],
+  ['BETHLEHEM', '🌟', 'The little town where Jesus was born.'],
+  ['STABLE', '🏠', 'A shelter for animals. Jesus was born in one.'],
+  ['ADVENT', '🗓️', 'The weeks we spend getting ready for Christmas.'],
+  ['CANDLE', '🕯️', 'We light one more of these each Sunday of Advent.'],
+  ['CHURCH', '⛪', 'Where we go to Mass on Christmas.'],
+  ['PRAY', '🙏', 'To talk with God.'],
+  ['SAINT', '⛪', 'A holy person, like Nicholas or Lucy.'],
+  ['KINGS', '👑', 'Three of them followed the star.'],
+  ['GOLD', '👑', 'A shiny yellow gift that a wise man brought.'],
+  ['CAMEL', '🐪', 'An animal with a hump that carried a wise man.'],
+  ['DONKEY', '🫏', 'An animal with long ears that says hee-haw.'],
+  ['SHEEP', '🐑', 'A woolly animal that says baa.'],
+  ['JOY', '🎉', 'A big, happy feeling.'],
+  ['PEACE', '🕊️', 'Calm and quiet, with no fighting.'],
+  ['HOPE', '🌟', 'Trusting that good things are coming.'],
+  ['LOVE', '❤️', 'What we feel for our family and for God.'],
+  ['CAROL', '🎶', 'A Christmas song.'],
+  ['NOEL', '🎶', 'Another word for Christmas.'],
+  ['SANTA', '🎅', 'He wears a red suit and says ho, ho, ho!'],
+  ['SLEIGH', '🛷', 'Santa rides in this across the sky.'],
+  ['REINDEER', '🦌', 'They pull the sleigh for Santa.'],
+  ['ELF', '🧝', 'A little helper in the workshop.'],
+  ['GIFT', '🎁', 'A present, wrapped up with a bow.'],
+  ['BELL', '🔔', 'It rings: ding, dong!'],
+  ['TREE', '🎄', 'We decorate it with lights and ornaments.'],
+  ['SNOW', '❄️', 'Soft, white and cold. It falls in winter.'],
+  ['COOKIE', '🍪', 'A sweet treat we leave out for Santa.'],
+  ['STOCKING', '🧦', 'We hang it up on Christmas Eve.'],
+  ['TOYS', '🧸', 'Things to play with.']
+];
 
 // Background music. All by Kevin MacLeod (incompetech.com), Creative Commons Attribution 4.0.
 App.TRACKS = [

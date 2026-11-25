@@ -17,6 +17,7 @@ SPEED = 0.9
 SAY = [
     (r'\bSt\.', 'Saint'),
     (r'Gaudete', 'Gow-day-tay'),
+    (r'\bNoel\b', 'No-el'),
     (r'\bYES\b', 'yes'),          # capitals get spelled out letter by letter
     (r'means "', 'means, "'),
     (r'"', ''),                    # quotation marks trip the voice up
